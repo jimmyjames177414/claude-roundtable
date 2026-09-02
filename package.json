@@ -1,0 +1,48 @@
+{
+  "name": "claude-roundtable",
+  "version": "0.1.0",
+  "description": "Two Claude personas argue a topic adversarially, streamed live in your terminal.",
+  "type": "module",
+  "bin": {
+    "roundtable": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "claude",
+    "anthropic",
+    "cli",
+    "llm",
+    "debate"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jimmyjames177414/claude-roundtable.git"
+  },
+  "homepage": "https://github.com/jimmyjames177414/claude-roundtable#readme",
+  "bugs": {
+    "url": "https://github.com/jimmyjames177414/claude-roundtable/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.123.0",
+    "chalk": "^6.0.0",
+    "commander": "^15.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "tsup": "^8.5.1",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  }
+}
