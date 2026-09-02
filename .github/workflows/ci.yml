@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -18,3 +18,18 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test
+
+  # vitest 4's bundled rolldown dependency needs node:util's styleText, which doesn't
+  # exist before Node 20 - that's a test-tooling limit, not a product one. tsup builds
+  # for target node18, so this job verifies the actual engines:>=18 promise by building
+  # and smoke-running the real binary on 18, without needing vitest to run there.
+  minimum-node-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run build
+      - run: node dist/index.js --version
