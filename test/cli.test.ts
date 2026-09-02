@@ -1,6 +1,9 @@
 import { describe, it, expect } from "vitest";
+import { createRequire } from "node:module";
 import { run, type CliDeps } from "../src/cli";
 import type { ChatClient, ChatStream, ChatStreamParams } from "../src/debate";
+
+const packageVersion = (createRequire(import.meta.url)("../package.json") as { version: string }).version;
 
 function createMockClient() {
   const calls: ChatStreamParams[] = [];
@@ -120,5 +123,14 @@ describe("cli run - success paths", () => {
     const { deps, out } = createDeps({ args: ["some topic", "--rounds", "1"] });
     await run(deps);
     expect(out.join("")).toContain("ok");
+  });
+});
+
+describe("cli run - --version", () => {
+  it("prints the package version and exits 0", async () => {
+    const { deps, out } = createDeps({ args: ["--version"] });
+    const code = await run(deps);
+    expect(code).toBe(0);
+    expect(out.join("")).toContain(packageVersion);
   });
 });

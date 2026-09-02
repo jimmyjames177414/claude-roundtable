@@ -1,7 +1,13 @@
 import { Command, CommanderError } from "commander";
 import chalk from "chalk";
+import { createRequire } from "node:module";
 import { CliError, resolveModel } from "./models";
 import { parsePersonas, parseRounds, runDebate, type ChatClient } from "./debate";
+
+function getVersion(): string {
+  const require = createRequire(import.meta.url);
+  return (require("../package.json") as { version: string }).version;
+}
 
 export interface CliDeps {
   args: string[];
@@ -24,6 +30,7 @@ function buildProgram(deps: CliDeps): Command {
   program
     .name("roundtable")
     .description('Two Claude personas argue a topic adversarially in your terminal.')
+    .version(getVersion())
     .argument("<topic>", "the topic for the two personas to debate")
     .option("--rounds <n>", "number of exchanges per persona", "3")
     .option("--personas <a,b>", "two persona labels/stances, comma-separated", "Proponent,Skeptic")
