@@ -12,7 +12,7 @@ function getVersion(): string {
 export interface CliDeps {
   args: string[];
   env: NodeJS.ProcessEnv;
-  createClient: (apiKey: string) => ChatClient;
+  createClient: (apiKey: string) => ChatClient | Promise<ChatClient>;
   write: (s: string) => void;
   writeError: (s: string) => void;
 }
@@ -79,7 +79,7 @@ export async function run(deps: CliDeps): Promise<number> {
       return 1;
     }
 
-    const client = deps.createClient(deps.env.ANTHROPIC_API_KEY);
+    const client = await deps.createClient(deps.env.ANTHROPIC_API_KEY);
 
     await runDebate(
       client,

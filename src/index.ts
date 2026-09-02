@@ -1,10 +1,12 @@
-import Anthropic from "@anthropic-ai/sdk";
 import { run } from "./cli";
 
 run({
   args: process.argv.slice(2),
   env: process.env,
-  createClient: (apiKey: string) => new Anthropic({ apiKey }),
+  createClient: async (apiKey: string) => {
+    const { default: Anthropic } = await import("@anthropic-ai/sdk");
+    return new Anthropic({ apiKey });
+  },
   write: (s: string) => {
     process.stdout.write(s);
   },
@@ -12,5 +14,5 @@ run({
     process.stderr.write(s);
   },
 }).then((code) => {
-  process.exitCode = code;
+  process.exit(code);
 });
