@@ -25,7 +25,7 @@ to attack, so the objection you had not thought of shows up in the second turn, 
 Moderator is prompted in as many words to be **"decisive, not diplomatic - do not simply
 summarize both sides as equally valid"**
 ([`src/debate.ts`](src/debate.ts)). It is a small tool. The output is the strongest case
-against your idea, on demand.
+against your idea.
 
 ```bash
 npx github:jimmyjames177414/claude-roundtable "should we rewrite the parser in Rust?" --judge
@@ -46,30 +46,30 @@ review. The memory bugs were caught by fuzzing, and fuzzing is cheaper than a re
 ...
 ```
 
-<sub><i>Illustrative, not a captured run - no Anthropic API key was available in the
+<sub><i>Illustrative, not a captured run. No Anthropic API key was available in the
 environment this was built in. See <a href="#example-output">Example output</a>.</i></sub>
 
 <p align="center">
   <img src="docs/demo.png" width="720" alt="Example roundtable debate output">
   <br>
-  <sub><i>Illustrative example output, styled for display - not a captured run. See
+  <sub><i>Illustrative example output, styled for display, not a captured run. See
   <a href="#example-output">Example output</a> for why, and how to get a real one.</i></sub>
 </p>
 
 ## What it is for
 
-Use it on the decision you have already half-made and want stress-tested - a library
+Use it on the decision you have already half-made and want stress-tested: a library
 choice, an architecture call, a "should we bother" question. You are not reading it for a
 winner. You are reading it for the one rebuttal that lands, which is usually the
 constraint you had quietly assumed away.
 
 Two things make that work, and both are just prompt design:
 
-- **Each persona is told to rebut the opponent's most recent point specifically**, not to
+- Each persona is told to rebut the opponent's most recent point specifically, not to
   restate its own position. That forces the argument forward instead of into two parallel
   monologues.
-- **Turns are capped at roughly 2–4 sentences.** A model given room to hedge will hedge.
-  A model given four sentences has to pick its best shot.
+- Turns are capped at roughly 2-4 sentences. A model given room to hedge will hedge. A
+  model given four sentences has to pick its best shot.
 
 ## Install
 
@@ -101,7 +101,8 @@ roundtable <topic> [options]
 | `--model <id>` | `claude-sonnet-5` | Override the Claude model id. Rejected with a clear error if it does not look like a real Claude model id. |
 | `--fast` | off | Shorthand for the cheaper `claude-haiku-4-5-20251001`. Mutually exclusive with `--model`. |
 
-The personas are stances, not just names, and that is the main lever worth playing with:
+Personas go into the system prompt as stances, so a whole descriptive phrase works as
+well as a bare label. That is the main lever worth playing with:
 
 ```bash
 roundtable "ship the migration on Friday" --personas "Staff engineer,On-call engineer"
@@ -116,27 +117,27 @@ independent `messages.stream` call: the persona's stance goes in the system prom
 topic plus the transcript so far goes in the user message. The transcript is plain text
 that gets rebuilt and resent each time.
 
-That makes the cost trivially predictable - **`rounds × 2` calls, plus one more with
-`--judge`** - so the default `--rounds 3 --judge` is seven calls, each capped at 500
-output tokens and requested at low effort. It also means the state you can see on screen
-is the entire state that exists. Kill it halfway and nothing is left behind.
+That makes the cost trivially predictable: `rounds × 2` calls, plus one more with
+`--judge`. The default `--rounds 3 --judge` is seven calls, each capped at 500 output
+tokens and requested at low effort. It also means the state you can see on screen is the
+entire state that exists. Kill it halfway and nothing is left behind.
 
 Output streams token by token, one colour per speaker: persona A cyan, persona B magenta,
 Moderator bold green.
 
 ## What it will not do
 
-- **It does not check facts.** Both personas argue from the model's priors. A rebuttal
-  that sounds devastating can be simply wrong, and the Moderator will not catch it - it
-  only reads the transcript it was handed.
-- **The verdict is not a decision procedure.** The Moderator is *instructed* to be
-  decisive. Instructed decisiveness is not the same thing as being right, and running the
-  same topic twice can land differently.
-- **It is not a multi-agent framework.** No tools, no file access, no memory, no
-  retrieval. If you want the personas to read your codebase, this is the wrong tool.
-- **It does not save anything.** The transcript goes to stdout and is gone. Redirect it
+- It does not check facts. Both personas argue from the model's priors. A rebuttal that
+  sounds devastating can be simply wrong, and the Moderator will not catch it. It only
+  reads the transcript it was handed.
+- The verdict is not a decision procedure. The Moderator is *instructed* to be decisive.
+  Instructed decisiveness is not the same thing as being right, and running the same
+  topic twice can land differently.
+- It is not a multi-agent framework. No tools, no file access, no memory, no retrieval.
+  If you want the personas to read your codebase, this is the wrong tool.
+- It does not save anything. The transcript goes to stdout and is gone. Redirect it
   yourself: `roundtable "..." --judge | tee debate.md`.
-- **Two sides only.** `--personas` takes exactly two and errors otherwise.
+- Two sides only. `--personas` takes exactly two and errors otherwise.
 
 ## Example output
 
@@ -167,7 +168,7 @@ Redux's middleware ecosystem or time-travel debugging.
 </details>
 
 Run it with a real key and this section (and the image above) can be replaced with an
-actual capture - PRs welcome. A [VHS](https://github.com/charmbracelet/vhs) tape is
+actual capture. PRs welcome. A [VHS](https://github.com/charmbracelet/vhs) tape is
 already checked in as scaffolding: `vhs demo.tape` will record a GIF once a key is
 present.
 
