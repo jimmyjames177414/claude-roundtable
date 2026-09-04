@@ -1,3 +1,7 @@
+<div align="center">
+<img src="https://raw.githubusercontent.com/jimmyjames177414/claude-roundtable/main/docs/banner.jpg" alt="jimmyjames177414" width="100%">
+</div>
+
 <p align="center">
   <img src="docs/avatar.png" width="88" alt="jimmyjames177414">
 </p>
