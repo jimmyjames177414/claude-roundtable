@@ -35,7 +35,7 @@
     "dist"
   ],
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.123.0",
+    "@anthropic-ai/sdk": "^0.124.0",
     "chalk": "^6.0.0",
     "commander": "^15.0.0"
   },
