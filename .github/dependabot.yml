@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+    ignore:
+      # tsup 9 needs Node 20.19+ to run, and the README's `npx github:` install builds
+      # with the user's Node, so a tsup major would drop Node 18 (maintainer kept 18, 2026-11-06).
+      - dependency-name: "tsup"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
