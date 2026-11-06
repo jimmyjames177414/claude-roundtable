@@ -20,16 +20,21 @@ jobs:
       - run: npm test
 
   # vitest 4's bundled rolldown dependency needs node:util's styleText, which doesn't
-  # exist before Node 20 - that's a test-tooling limit, not a product one. tsup builds
-  # for target node18, so this job verifies the actual engines:>=18 promise by building
-  # and smoke-running the real binary on 18, without needing vitest to run there.
+  # exist before Node 20, and tsup 9 needs Node 20.19+ to run (cac, chokidar) - test and
+  # build tooling limits, not product ones. tsup builds for target node18, so this job
+  # builds on 22, then switches to 18 and smoke-runs the real binary: that is the
+  # engines:>=18 promise, which is about running the CLI, not building it.
   minimum-node-smoke-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: 18
+          node-version: 22
       - run: npm ci
       - run: npm run build
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 18
+      - run: node --version
       - run: node dist/index.js --version
